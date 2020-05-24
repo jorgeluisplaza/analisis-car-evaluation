@@ -1,3 +1,8 @@
+# Instala paquetes si se requieren
+if(!require(tidyverse)) install.packages("tidyverse", repos = "http://cran.us.r-project.org")
+if(!require(gplots)) install.packages("gplots", repos = "http://cran.us.r-project.org")
+
+# Carga las librerias 
 library(tidyverse)
 library(gplots)
 
@@ -98,6 +103,18 @@ cars %>%
   ylab("Distribución") +
   ggtitle("Distribución de la decisión")
 
+# Tablas contingencia de ejemplo en el informe
+table(cars$buyingPrice, cars$maintenanceCost)
+table(cars$numberOfPersons, cars$sizeOfLuggageBoot)
+table(cars$buyingPrice, cars$numberOfPersons)
+
+# Otras tablas de ejemplo
+# Todas equilibradas
+table(cars$buyingPrice, cars$numberOfDoors)
+table(cars$buyingPrice, cars$safety)
+table(cars$sizeOfLuggageBoot, cars$numberOfDoors)
+table(cars$maintenanceCost, cars$safety)
+
 # Tablas de contingencia por cada variable y la decision
 tabla.precios.decision <- table(cars$buyingPrice, cars$decision)
 tabla.maletero.decision <- table(cars$sizeOfLuggageBoot, cars$decision)
@@ -106,70 +123,77 @@ tabla.seguridad.decision <- table(cars$safety, cars$decision)
 tabla.puertas.decision <- table(cars$numberOfDoors, cars$decision)
 tabla.personas.decision <- table(cars$numberOfPersons, cars$decision)
 
-#Mostrar los datos como tablas
+# Mostrar los datos como tablas graficamente
+# Tabla precio - decision
 precios.decision <- as.table(as.matrix(tabla.precios.decision))
 balloonplot(t(precios.decision), main = "precios/decision", xlab = "", ylab = "",
             label = FALSE, show.margins = FALSE)
 
+# Tabla maletero - decision
 maletero.decision <- as.table(as.matrix(tabla.maletero.decision))
 balloonplot(t(maletero.decision), main = "maletero/decision", xlab = "", ylab = "",
             label = FALSE, show.margins = FALSE)
 
+# Tabla costo mantencion - decision
 mantencion.decision <- as.table(as.matrix(tabla.mantencion.decision))
 balloonplot(t(mantencion.decision), main = "mantencion/decision", xlab = "", ylab = "",
             label = FALSE, show.margins = FALSE)
 
+# Tabla seguridad - decision
 seguridad.decision <- as.table(as.matrix(tabla.seguridad.decision))
 balloonplot(t(seguridad.decision), main = "seguridad/decision", xlab = "", ylab = "",
             label = FALSE, show.margins = FALSE)
 
+# Tabla numero puertas - decision
 puertas.decision <- as.table(as.matrix(tabla.puertas.decision))
 balloonplot(t(puertas.decision), main = "puertas/decision", xlab = "", ylab = "",
             label = FALSE, show.margins = FALSE)
 
+# Tabla numero de personas - decision
 personas.decision <- as.table(as.matrix(tabla.personas.decision))
 balloonplot(t(personas.decision), main = "personas/decision", xlab = "", ylab = "",
             label = FALSE, show.margins = FALSE)
 
 #Se procede a realizar el test de independencia chi cuadrado a cada tabla de contingencia previamente realizada.
 #Planteamiento de hipotesis:
+
 #H0: Las variables de precio y decision son independientes.
-#Ha: Las variables de precio y decision son dependientes
+#Ha: Las variables de precio y decision no son independientes
 chi1 <- chisq.test(tabla.precios.decision)
 #Conclusion: Como el p valor es menor a 0.05 se rechaza la hipotesis nula en favor de la alternativa, 
 #esxistiendo una asociacion entre el precio y la decision.
 
 #Planteamiento de hipotesis:
 #H0: Las variables de maletero y decision son independientes.
-#Ha: Las variables de maletero y decision son dependientes
+#Ha: Las variables de maletero y decision no son independientes
 chi2 <- chisq.test(tabla.maletero.decision)
 #Conclusion: Como el p valor es menor a 0.05 se rechaza la hipotesis nula en favor de la alternativa, 
 #esxistiendo una asociacion entre el maletero y la decision.
 
 #Planteamiento de hipotesis:
 #H0: Las variables de mantencion y decision son independientes.
-#Ha: Las variables de mantencion y decision son dependientes
+#Ha: Las variables de mantencion y decision no son independientes
 chi3 <- chisq.test(tabla.mantencion.decision)
 #Conclusion: Como el p valor es menor a 0.05 se rechaza la hipotesis nula en favor de la alternativa, 
 #esxistiendo una asociacion entre la mantencion y la decision.
 
 #Planteamiento de hipotesis:
 #H0: Las variables de seguridad y decision son independientes.
-#Ha: Las variables de seguridad y decision son dependientes
+#Ha: Las variables de seguridad y decision no son independientes
 chi4 <- chisq.test(tabla.seguridad.decision)
 #Conclusion: Como el p valor es menor a 0.05 se rechaza la hipotesis nula en favor de la alternativa, 
 #esxistiendo una asociacion entre la seguridad y la decision.
 
 #Planteamiento de hipotesis:
 #H0: Las variables de puertas y decision son independientes.
-#Ha: Las variables de puertas y decision son dependientes
+#Ha: Las variables de puertas y decision no son independientes
 chi5 <- chisq.test(tabla.puertas.decision)
 #Conclusion: Como el p valor es mayor a 0.05 se falla en rechazar la hipotesis nula en favor de la alternativa, 
 #NO esxistiendo una asociacion entre las puertas y la decision.
 
 #Planteamiento de hipotesis:
 #H0: Las variables de personas y decision son independientes.
-#Ha: Las variables de personas y decision son dependientes
+#Ha: Las variables de personas y decision no son independientes
 chi6 <- chisq.test(tabla.personas.decision)
 #Conclusion: Como el p valor es menor a 0.05 se rechaza la hipotesis nula en favor de la alternativa, 
 #esxistiendo una asociacion entre la cantidad de personas y la decision.
